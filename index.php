@@ -11,6 +11,7 @@ $baseUrl = $protocol . '://' . $host;
 
 $featured = $books[0] ?? null;
 $gridBooks = $featured ? array_slice($books, 1, 10) : [];
+$remainingBooks = $featured ? array_slice($books, 11) : [];
 
 $ogTitle = 'Dreamtigers - εκδόσεις εξωτερικής καύσης-εσωτερικής κατανάλωσης';
 $ogDescription = 'Ανακαλύψτε και διαβάστε δωρεάν ebooks από τις εκδόσεις Dreamtigers, επιμέλεια Yannis Adamis.';
@@ -86,6 +87,22 @@ if ($featured) {
             </a>
             <?php endforeach; ?>
         </div>
+        <?php if (!empty($remainingBooks)): ?>
+        <div class="book-grid book-grid-hidden" id="remainingBooks">
+            <?php foreach ($remainingBooks as $book):
+                $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
+                $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
+            ?>
+            <a href="book.php?slug=<?= htmlspecialchars(urlencode($book['slug']), ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
+                <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                <span class="book-grid-title"><?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?></span>
+            </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="load-more-container">
+            <button class="btn-load-more" id="loadMoreBtn" onclick="loadMoreBooks()">Δείτε όλα τα βιβλία</button>
+        </div>
+        <?php endif; ?>
     </section>
     <?php endif; ?>
 
@@ -100,5 +117,16 @@ if ($featured) {
             </a>
         </p>
     </footer>
+
+    <script>
+        function loadMoreBooks() {
+            const grid = document.getElementById('remainingBooks');
+            const btn = document.getElementById('loadMoreBtn');
+            if (grid) {
+                grid.classList.remove('book-grid-hidden');
+                btn.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

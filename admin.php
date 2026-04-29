@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/helpers.php';
 checkAuth();
 
 $pdo = getDb();
@@ -52,12 +53,40 @@ $books = $stmt->fetchAll();
                 <span class="title"><?= htmlspecialchars($book['title']) ?></span>
                 <div class="actions">
                     <a href="book.php?slug=<?= htmlspecialchars($book['slug']) ?>" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View</a>
+                    <button class="btn btn-edit" onclick="openEditModal(<?= $book['id'] ?>, '<?= htmlspecialchars(addslashes($book['title'])) ?>', '<?= htmlspecialchars($book['pdf_filename']) ?>')">Edit</button>
                     <button class="btn btn-danger" onclick="deleteBook(<?= $book['id'] ?>)">Delete</button>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
     </main>
+
+    <div id="editModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Book</h2>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editBookForm" enctype="multipart/form-data">
+                <input type="hidden" id="editId" name="id">
+                <div class="form-group">
+                    <label for="editTitle">Title</label>
+                    <input type="text" id="editTitle" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Current PDF: <span id="editCurrentPdf"></span></label>
+                    <label for="editPdf">Replace PDF (optional)</label>
+                    <input type="file" id="editPdf" name="pdf" accept=".pdf">
+                </div>
+                <div class="form-group">
+                    <label for="editCover">Replace Cover (optional)</label>
+                    <input type="file" id="editCover" name="cover" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+            <p id="editMessage" style="margin-top: 12px;"></p>
+        </div>
+    </div>
 
     <script>
         document.getElementById('addBookForm').addEventListener('submit', async (e) => {
@@ -105,6 +134,51 @@ $books = $stmt->fetchAll();
                 alert('Error deleting book.');
             }
         }
+
+        function openEditModal(id, title, pdfFilename) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editCurrentPdf').textContent = pdfFilename;
+            document.getElementById('editPdf').value = '';
+            document.getElementById('editCover').value = '';
+            document.getElementById('editMessage').textContent = '';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        document.getElementById('editBookForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            formData.append('action', 'edit');
+
+            const msg = document.getElementById('editMessage');
+            msg.textContent = 'Saving...';
+
+            try {
+                const res = await fetch('api.php', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    msg.textContent = 'Book updated successfully!';
+                    msg.style.color = 'green';
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    msg.textContent = 'Error: ' + data.error;
+                    msg.style.color = 'red';
+                }
+            } catch (err) {
+                msg.textContent = 'Error updating book.';
+                msg.style.color = 'red';
+            }
+        });
+
+        document.getElementById('editModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('editModal')) {
+                closeEditModal();
+            }
+        });
     </script>
 </body>
 </html>

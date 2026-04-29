@@ -178,6 +178,30 @@ h1, h2, h3 {
     text-decoration: none;
 }
 
+.social-links {
+    margin-top: 16px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-secondary);
+    transition: color 0.2s ease;
+}
+
+.social-links a:hover {
+    color: #1877F2;
+}
+
+.facebook-icon {
+    transition: transform 0.2s ease;
+}
+
+.social-links a:hover .facebook-icon {
+    transform: scale(1.1);
+}
+
 /* Book Page */
 .book-page {
     max-width: 900px;
@@ -203,6 +227,29 @@ h1, h2, h3 {
 
 .book-back:hover {
     color: var(--color-accent);
+}
+
+.share-facebook-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1877F2;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 12px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.share-facebook-btn:hover {
+    background: #1565C0;
+    transform: translateY(-1px);
+}
+
+.share-facebook-btn svg {
+    flex-shrink: 0;
 }
 
 .book-pdf-container {
@@ -287,6 +334,59 @@ h1, h2, h3 {
 
 .btn-danger:hover {
     background: #c82333;
+}
+
+.btn-edit {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #138496;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--color-bg);
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    padding: 4px 8px;
+}
+
+.modal-close:hover {
+    color: var(--color-text);
 }
 
 .book-list {

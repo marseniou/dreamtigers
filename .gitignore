@@ -31,3 +31,4 @@ app.db
 
 # Admin credentials
 admin_config.php
+.worktrees/

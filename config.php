@@ -2,6 +2,7 @@
 // config.php - Database connection, paths, constants
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 define('DB_PATH', __DIR__ . '/app.db');
 define('COVERS_DIR', __DIR__ . '/covers');
@@ -38,20 +39,18 @@ initDirectories();
 
 // Create database tables if they don't exist
 function initDatabase(): void {
-    if (!file_exists(DB_PATH)) {
-        $db = getDb();
-        $db->exec('
-            CREATE TABLE IF NOT EXISTS books (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT NOT NULL,
-                pdf_filename TEXT NOT NULL,
-                cover_filename TEXT NOT NULL,
-                cover_orientation TEXT DEFAULT "vertical",
-                slug TEXT UNIQUE NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-        ');
-    }
+    $db = getDb();
+    $db->exec('
+        CREATE TABLE IF NOT EXISTS books (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            pdf_filename TEXT NOT NULL,
+            cover_filename TEXT NOT NULL,
+            cover_orientation TEXT DEFAULT "vertical",
+            slug TEXT UNIQUE NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ');
 }
 initDatabase();

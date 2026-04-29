@@ -14,8 +14,9 @@ function generateSlug(string $title): string {
 function ensureUniqueSlug(PDO $db, string $slug): string {
     $original = $slug;
     $counter = 1;
+    $maxAttempts = 1000;
     $stmt = $db->prepare('SELECT COUNT(*) FROM books WHERE slug = :slug');
-    while (true) {
+    while ($counter <= $maxAttempts) {
         $stmt->execute([':slug' => $slug]);
         if ((int)$stmt->fetchColumn() === 0) {
             return $slug;
@@ -23,6 +24,7 @@ function ensureUniqueSlug(PDO $db, string $slug): string {
         $slug = $original . '-' . $counter;
         $counter++;
     }
+    return $original . '-' . time();
 }
 
 function resizeCover(string $sourcePath, string $destDir): string {
@@ -54,6 +56,15 @@ function resizeCover(string $sourcePath, string $destDir): string {
     }
 
     $destImage = imagecreatetruecolor($targetW, $targetH);
+
+    // Preserve PNG transparency
+    if ($type === IMAGETYPE_PNG) {
+        imagealphablending($destImage, false);
+        imagesavealpha($destImage, true);
+        $transparent = imagecolorallocatealpha($destImage, 255, 255, 255, 127);
+        imagefilledrectangle($destImage, 0, 0, $targetW, $targetH, $transparent);
+    }
+
     imagecopyresampled($destImage, $srcImage, 0, 0, 0, 0, $targetW, $targetH, $width, $height);
     imagedestroy($srcImage);
 

@@ -38,7 +38,7 @@ if (!file_exists($pdfPath)) {
             <h1><?= htmlspecialchars($book['title']) ?></h1>
         </div>
         <div class="book-pdf-container">
-            <iframe src="<?= htmlspecialchars($pdfPath) ?>"></iframe>
+            <iframe src="<?= htmlspecialchars($pdfPath) ?>" sandbox="allow-same-origin" title="<?= htmlspecialchars($book['title']) ?>"></iframe>
         </div>
     </main>
 </body>

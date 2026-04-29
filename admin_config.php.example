@@ -1,0 +1,5 @@
+<?php
+// admin_config.php - Admin credentials (NOT committed to version control)
+// Copy admin_config.php.example to admin_config.php and set your credentials
+define('ADMIN_USERNAME', 'admin');
+define('ADMIN_PASSWORD', 'dreamtigers'); // Change this before deploying!

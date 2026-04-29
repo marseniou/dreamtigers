@@ -17,8 +17,14 @@ define('COVER_WIDTH_VERTICAL', 419);
 define('COVER_HEIGHT_VERTICAL', 595);
 define('COVER_WIDTH_HORIZONTAL', 595);
 define('COVER_HEIGHT_HORIZONTAL', 419);
-define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD', 'dreamtigers'); // Change this!
+
+// Admin credentials - override in admin_config.php (not committed to VCS)
+if (file_exists(__DIR__ . '/admin_config.php')) {
+    require_once __DIR__ . '/admin_config.php';
+} else {
+    define('ADMIN_USERNAME', 'admin');
+    define('ADMIN_PASSWORD', 'dreamtigers');
+}
 
 function getDb(): PDO {
     $db = new PDO('sqlite:' . DB_PATH);

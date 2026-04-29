@@ -5,6 +5,10 @@ require_once __DIR__ . '/helpers.php';
 header('Content-Type: application/json');
 checkAuth();
 
+// File size limits (bytes)
+define('MAX_PDF_SIZE', 100 * 1024 * 1024);    // 100 MB
+define('MAX_COVER_SIZE', 10 * 1024 * 1024);   // 10 MB
+
 $pdo = getDb();
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
@@ -20,6 +24,18 @@ switch ($action) {
         if (empty($title)) {
             http_response_code(400);
             echo json_encode(['error' => 'Title is required']);
+            exit;
+        }
+
+        // Validate file sizes
+        if ($_FILES['pdf']['size'] > MAX_PDF_SIZE) {
+            http_response_code(400);
+            echo json_encode(['error' => 'PDF too large (max 100 MB)']);
+            exit;
+        }
+        if ($_FILES['cover']['size'] > MAX_COVER_SIZE) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Cover image too large (max 10 MB)']);
             exit;
         }
 
@@ -44,6 +60,7 @@ switch ($action) {
         move_uploaded_file($_FILES['pdf']['tmp_name'], UPLOADS_PDFS . '/' . $pdfFilename);
 
         // Handle cover upload and resize
+        $coverFilename = null;
         try {
             $coverOrientation = $coverInfo[1] > $coverInfo[0] ? 'vertical' : 'horizontal';
             $correctDir = $coverOrientation === 'vertical' ? COVERS_VERTICAL : COVERS_HORIZONTAL;
@@ -53,24 +70,40 @@ switch ($action) {
                 unlink(UPLOADS_PDFS . '/' . $pdfFilename);
             }
             http_response_code(500);
-            echo json_encode(['error' => 'Error processing cover: ' . $e->getMessage()]);
+            echo json_encode(['error' => 'Error processing cover image']);
             exit;
         }
 
         $slug = generateSlug($title);
         $slug = ensureUniqueSlug($pdo, $slug);
 
-        $stmt = $pdo->prepare('
-            INSERT INTO books (title, pdf_filename, cover_filename, cover_orientation, slug)
-            VALUES (:title, :pdf, :cover, :orientation, :slug)
-        ');
-        $stmt->execute([
-            ':title' => $title,
-            ':pdf' => $pdfFilename,
-            ':cover' => $coverFilename,
-            ':orientation' => $coverOrientation,
-            ':slug' => $slug,
-        ]);
+        // Insert into DB with cleanup on failure
+        try {
+            $stmt = $pdo->prepare('
+                INSERT INTO books (title, pdf_filename, cover_filename, cover_orientation, slug)
+                VALUES (:title, :pdf, :cover, :orientation, :slug)
+            ');
+            $stmt->execute([
+                ':title' => $title,
+                ':pdf' => $pdfFilename,
+                ':cover' => $coverFilename,
+                ':orientation' => $coverOrientation,
+                ':slug' => $slug,
+            ]);
+        } catch (Exception $e) {
+            // Clean up uploaded files on DB failure
+            if (file_exists(UPLOADS_PDFS . '/' . $pdfFilename)) {
+                unlink(UPLOADS_PDFS . '/' . $pdfFilename);
+            }
+            $coverDir = $coverOrientation === 'vertical' ? COVERS_VERTICAL : COVERS_HORIZONTAL;
+            $coverPath = $coverDir . '/' . $coverFilename;
+            if (file_exists($coverPath)) {
+                unlink($coverPath);
+            }
+            http_response_code(500);
+            echo json_encode(['error' => 'Error saving book to database']);
+            exit;
+        }
 
         echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
         break;

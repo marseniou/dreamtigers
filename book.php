@@ -41,8 +41,8 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $ogTitle ?></title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="logo.png" type="image/png">
-    <link rel="shortcut icon" href="logo.png" type="image/png">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
 
     <meta property="og:locale" content="el_GR">
     <meta property="og:type" content="book">

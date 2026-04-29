@@ -1,5 +1,9 @@
 <?php
 // init_db.php - One-time script: scan folders, populate DB, resize covers
+if (php_sapi_name() !== 'cli') {
+    exit('CLI only');
+}
+
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/helpers.php';
 
@@ -37,6 +41,9 @@ foreach ($pdfs as $pdfPath) {
         echo "No cover found for: $pdfFilename\n";
         continue;
     }
+
+    // Remove matched cover to prevent duplicate assignment
+    $coverFiles = array_diff($coverFiles, [$coverFile]);
 
     $coverSrcPath = COVERS_ORIGINAL . '/' . $coverFile;
 

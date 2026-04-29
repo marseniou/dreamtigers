@@ -19,7 +19,7 @@ $ogImage = $baseUrl . '/logo.png';
 
 if ($featured) {
     $coverDir = $featured['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-    $ogImage = $baseUrl . "/covers/{$coverDir}/{$featured['cover_filename']}";
+    $ogImage = $baseUrl . "/covers/{$coverDir}/" . rawurlencode($featured['cover_filename']);
 }
 ?>
 <!DOCTYPE html>
@@ -34,18 +34,18 @@ if ($featured) {
 
     <meta property="og:locale" content="el_GR">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="<?= htmlspecialchars($ogTitle) ?>">
-    <meta property="og:description" content="<?= htmlspecialchars($ogDescription) ?>">
-    <meta property="og:url" content="<?= htmlspecialchars($ogUrl) ?>">
-    <meta property="og:image" content="<?= htmlspecialchars($ogImage) ?>">
+    <meta property="og:title" content="<?= htmlspecialchars($ogTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($ogDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($ogUrl, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') ?>">
     <meta property="og:site_name" content="Dreamtigers">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?= htmlspecialchars($ogTitle) ?>">
-    <meta name="twitter:description" content="<?= htmlspecialchars($ogDescription) ?>">
-    <meta name="twitter:image" content="<?= htmlspecialchars($ogImage) ?>">
+    <meta name="twitter:title" content="<?= htmlspecialchars($ogTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($ogDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:image" content="<?= htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body>
     <header class="gallery-hero">
@@ -57,17 +57,16 @@ if ($featured) {
     <?php if ($featured): ?>
     <section class="featured-section">
         <?php
-        $coverDir = $featured['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-        $coverPath = "covers/{$coverDir}/{$featured['cover_filename']}";
+        $featuredCoverPath = "covers/{$coverDir}/" . rawurlencode($featured['cover_filename']);
         ?>
         <div class="featured-content">
-            <a href="book.php?slug=<?= htmlspecialchars($featured['slug']) ?>">
-                <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($featured['title']) ?>" class="featured-cover">
+            <a href="book.php?slug=<?= htmlspecialchars(urlencode($featured['slug']), ENT_QUOTES, 'UTF-8') ?>">
+                <img src="<?= htmlspecialchars($featuredCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($featured['title'], ENT_QUOTES, 'UTF-8') ?>" class="featured-cover">
             </a>
             <div class="featured-info">
                 <span class="featured-label">ΝΕΑ ΕΚΔΟΣΗ</span>
-                <h2 class="featured-title"><?= htmlspecialchars($featured['title']) ?></h2>
-                <a href="book.php?slug=<?= htmlspecialchars($featured['slug']) ?>" class="featured-cta">Διαβάστε τώρα</a>
+                <h2 class="featured-title"><?= htmlspecialchars($featured['title'], ENT_QUOTES, 'UTF-8') ?></h2>
+                <a href="book.php?slug=<?= htmlspecialchars(urlencode($featured['slug']), ENT_QUOTES, 'UTF-8') ?>" class="featured-cta">Διαβάστε τώρα</a>
             </div>
         </div>
     </section>
@@ -78,12 +77,12 @@ if ($featured) {
         <h2 class="collection-title">Η Συλλογή</h2>
         <div class="book-grid">
             <?php foreach ($gridBooks as $book):
-                $coverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-                $coverPath = "covers/{$coverDir}/{$book['cover_filename']}";
+                $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
+                $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
             ?>
-            <a href="book.php?slug=<?= htmlspecialchars($book['slug']) ?>" class="book-grid-item">
-                <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
-                <span class="book-grid-title"><?= htmlspecialchars($book['title']) ?></span>
+            <a href="book.php?slug=<?= htmlspecialchars(urlencode($book['slug']), ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
+                <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                <span class="book-grid-title"><?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?></span>
             </a>
             <?php endforeach; ?>
         </div>

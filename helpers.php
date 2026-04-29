@@ -3,7 +3,8 @@
 require_once __DIR__ . '/config.php';
 
 function generateSlug(string $title): string {
-    $slug = strtolower(trim($title));
+    // Transliterate Greek and other Unicode chars to ASCII
+    $slug = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $title);
     $slug = preg_replace('/[^a-z0-9_\-\s]/u', '', $slug);
     $slug = preg_replace('/[\s_]+/', '-', $slug);
     $slug = preg_replace('/-+/', '-', $slug);

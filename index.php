@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config.php';
 
 $pdo = getDb();
-$stmt = $pdo->query('SELECT * FROM books ORDER BY created_at DESC');
+$stmt = $pdo->query('SELECT id, title, slug, cover_filename, cover_orientation FROM books ORDER BY created_at DESC');
 $books = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -60,45 +60,52 @@ $books = $stmt->fetchAll();
     </footer>
 
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const bullets = document.querySelectorAll('.carousel-bullet');
-        const totalSlides = slides.length;
+        (function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const bullets = document.querySelectorAll('.carousel-bullet');
+            const totalSlides = slides.length;
+            if (totalSlides === 0) return;
 
-        function showSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            bullets[currentSlide].classList.remove('active');
-            currentSlide = (index + totalSlides) % totalSlides;
-            slides[currentSlide].classList.add('active');
-            bullets[currentSlide].classList.add('active');
-        }
+            let currentSlide = 0;
 
-        function changeSlide(direction) {
-            showSlide(currentSlide + direction);
-        }
-
-        function goToSlide(index) {
-            showSlide(index);
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') changeSlide(-1);
-            if (e.key === 'ArrowRight') changeSlide(1);
-        });
-
-        // Touch/swipe support
-        let touchStartX = 0;
-        const carousel = document.getElementById('carousel');
-        carousel.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        carousel.addEventListener('touchend', (e) => {
-            const diff = touchStartX - e.changedTouches[0].screenX;
-            if (Math.abs(diff) > 50) {
-                changeSlide(diff > 0 ? 1 : -1);
+            function showSlide(index) {
+                slides[currentSlide].classList.remove('active');
+                bullets[currentSlide].classList.remove('active');
+                currentSlide = (index + totalSlides) % totalSlides;
+                slides[currentSlide].classList.add('active');
+                bullets[currentSlide].classList.add('active');
             }
-        });
+
+            window.changeSlide = function(direction) {
+                showSlide(currentSlide + direction);
+            };
+
+            window.goToSlide = function(index) {
+                showSlide(index);
+            };
+
+            // Keyboard navigation (scoped to non-input elements)
+            document.addEventListener('keydown', (e) => {
+                const tag = document.activeElement.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+                if (e.key === 'ArrowLeft') window.changeSlide(-1);
+                if (e.key === 'ArrowRight') window.changeSlide(1);
+            });
+
+            // Touch/swipe support
+            const carousel = document.getElementById('carousel');
+            if (!carousel) return;
+            let touchStartX = 0;
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            carousel.addEventListener('touchend', (e) => {
+                const diff = touchStartX - e.changedTouches[0].screenX;
+                if (Math.abs(diff) > 50) {
+                    window.changeSlide(diff > 0 ? 1 : -1);
+                }
+            });
+        })();
     </script>
 </body>
 </html>

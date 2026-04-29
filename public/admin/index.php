@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/../../app/config.php';
+require_once __DIR__ . '/../../app/helpers.php';
 checkAuth();
 
 $pdo = getDb();
@@ -19,7 +19,7 @@ $books = $stmt->fetchAll();
     <main class="admin-section">
         <div class="admin-header">
             <h1>Admin Panel</h1>
-            <p><a href="index.php">&larr; Back to site</a></p>
+            <p><a href="../">&larr; Back to site</a></p>
         </div>
 
         <div class="admin-form">

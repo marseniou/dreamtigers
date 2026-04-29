@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Redirect direct index.php requests to /
+RewriteCond %{THE_REQUEST} /index\.php [NC]
+RewriteRule ^(.*?)index\.php$ /$1 [L,R=301,NC]
+
+# Route /book/slug to book.php
+RewriteRule ^book/([a-zA-Z0-9\-_~]+)$ book.php?slug=$1 [L,QSA]
+
+# Serve existing files directly (css, images, pdfs)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]

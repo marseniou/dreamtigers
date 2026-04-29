@@ -4,8 +4,8 @@ if (php_sapi_name() !== 'cli') {
     exit('CLI only');
 }
 
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/app/config.php';
+require_once __DIR__ . '/app/helpers.php';
 
 $pdo = getDb();
 

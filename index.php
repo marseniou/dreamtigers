@@ -61,13 +61,13 @@ if ($featured) {
         $featuredCoverPath = "covers/{$coverDir}/" . rawurlencode($featured['cover_filename']);
         ?>
         <div class="featured-content">
-            <a href="book.php?slug=<?= htmlspecialchars(urlencode($featured['slug']), ENT_QUOTES, 'UTF-8') ?>">
+            <a href="book/<?= htmlspecialchars($featured['slug'], ENT_QUOTES, 'UTF-8') ?>">
                 <img src="<?= htmlspecialchars($featuredCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($featured['title'], ENT_QUOTES, 'UTF-8') ?>" class="featured-cover">
             </a>
             <div class="featured-info">
                 <span class="featured-label">ΝΕΑ ΕΚΔΟΣΗ</span>
                 <h2 class="featured-title"><?= htmlspecialchars($featured['title'], ENT_QUOTES, 'UTF-8') ?></h2>
-                <a href="book.php?slug=<?= htmlspecialchars(urlencode($featured['slug']), ENT_QUOTES, 'UTF-8') ?>" class="featured-cta">Διαβάστε τώρα</a>
+                <a href="book/<?= htmlspecialchars($featured['slug'], ENT_QUOTES, 'UTF-8') ?>" class="featured-cta">Διαβάστε τώρα</a>
             </div>
         </div>
     </section>
@@ -81,7 +81,7 @@ if ($featured) {
                 $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
                 $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
             ?>
-            <a href="book.php?slug=<?= htmlspecialchars(urlencode($book['slug']), ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
+            <a href="book/<?= htmlspecialchars($book['slug'], ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
                 <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                 <span class="book-grid-title"><?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?></span>
             </a>
@@ -93,7 +93,7 @@ if ($featured) {
                 $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
                 $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
             ?>
-            <a href="book.php?slug=<?= htmlspecialchars(urlencode($book['slug']), ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
+            <a href="book/<?= htmlspecialchars($book['slug'], ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
                 <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                 <span class="book-grid-title"><?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?></span>
             </a>

@@ -52,7 +52,7 @@ $books = $stmt->fetchAll();
                 <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($book['title']) ?>">
                 <span class="title"><?= htmlspecialchars($book['title']) ?></span>
                 <div class="actions">
-                    <a href="book.php?slug=<?= htmlspecialchars($book['slug']) ?>" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View</a>
+                    <a href="book/<?= htmlspecialchars($book['slug']) ?>" class="btn btn-primary" style="font-size: 0.9rem; padding: 8px 16px;">View</a>
                     <button class="btn btn-edit" onclick="openEditModal(<?= $book['id'] ?>, '<?= htmlspecialchars(addslashes($book['title'])) ?>', '<?= htmlspecialchars($book['pdf_filename']) ?>')">Edit</button>
                     <button class="btn btn-danger" onclick="deleteBook(<?= $book['id'] ?>)">Delete</button>
                 </div>

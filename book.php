@@ -64,7 +64,7 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
         <a href="index.php" class="book-back">&larr; Back to all books</a>
         <div class="book-header">
             <h1><?= htmlspecialchars($book['title']) ?></h1>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode('https://dreamtigers.gr/book.php?slug=' . $book['slug']) ?>&quote=<?= urlencode('Διαβάστε δωρεάν: ' . $book['title'] . ' - Dreamtigers') ?>"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode('https://dreamtigers.gr/book/' . $book['slug']) ?>&quote=<?= urlencode('Διαβάστε δωρεάν: ' . $book['title'] . ' - Dreamtigers') ?>"
                target="_blank"
                rel="noopener noreferrer"
                class="share-facebook-btn">
@@ -80,5 +80,17 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
             </object>
         </div>
     </main>
+
+    <footer class="footer">
+        <p>Created by <strong>Marios Arseniou</strong></p>
+        <p class="social-links">
+            <a href="https://www.facebook.com/thedreamtigers" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg class="facebook-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.658-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.675V1.325C24 .6 23.4 0 22.675 0z"/>
+                </svg>
+                @thedreamtigers
+            </a>
+        </p>
+    </footer>
 </body>
 </html>

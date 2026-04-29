@@ -1,14 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
 
-// Front controller routing: /book/{slug} → book.php
-$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-if (preg_match('/^\/book\/([a-zA-Z0-9\-_~]+)$/', $requestUri, $matches)) {
-    $_GET['slug'] = $matches[1];
-    include __DIR__ . '/book.php';
-    exit;
-}
-
 $pdo = getDb();
 $stmt = $pdo->query('SELECT id, title, slug, cover_filename, cover_orientation FROM books ORDER BY created_at DESC');
 $books = $stmt->fetchAll();

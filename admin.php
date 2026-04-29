@@ -98,6 +98,8 @@ $books = $stmt->fetchAll();
                 const data = await res.json();
                 if (data.success) {
                     document.getElementById('book-' + id).remove();
+                } else {
+                    alert('Error: ' + data.error);
                 }
             } catch (err) {
                 alert('Error deleting book.');

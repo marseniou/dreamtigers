@@ -23,16 +23,29 @@ switch ($action) {
             exit;
         }
 
+        // Validate PDF
+        $pdfExt = strtolower(pathinfo($_FILES['pdf']['name'], PATHINFO_EXTENSION));
+        if ($pdfExt !== 'pdf') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid file type: PDF required']);
+            exit;
+        }
+
+        // Validate cover is an image
+        $coverInfo = getimagesize($_FILES['cover']['tmp_name']);
+        if ($coverInfo === false) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid cover image']);
+            exit;
+        }
+
         // Handle PDF upload
-        $pdfExt = pathinfo($_FILES['pdf']['name'], PATHINFO_EXTENSION);
         $pdfFilename = bin2hex(random_bytes(8)) . '.' . $pdfExt;
         move_uploaded_file($_FILES['pdf']['tmp_name'], UPLOADS_PDFS . '/' . $pdfFilename);
 
         // Handle cover upload and resize
-        $coverOrientation = 'vertical';
         try {
-            $info = getimagesize($_FILES['cover']['tmp_name']);
-            $coverOrientation = $info[1] > $info[0] ? 'vertical' : 'horizontal';
+            $coverOrientation = $coverInfo[1] > $coverInfo[0] ? 'vertical' : 'horizontal';
             $correctDir = $coverOrientation === 'vertical' ? COVERS_VERTICAL : COVERS_HORIZONTAL;
             $coverFilename = resizeCover($_FILES['cover']['tmp_name'], $correctDir);
         } catch (Exception $e) {
@@ -40,7 +53,7 @@ switch ($action) {
                 unlink(UPLOADS_PDFS . '/' . $pdfFilename);
             }
             http_response_code(500);
-            echo json_encode(['error' => 'Invalid cover image: ' . $e->getMessage()]);
+            echo json_encode(['error' => 'Error processing cover: ' . $e->getMessage()]);
             exit;
         }
 
@@ -74,17 +87,21 @@ switch ($action) {
         $stmt->execute([':id' => $id]);
         $book = $stmt->fetch();
 
-        if ($book) {
-            $coverDir = $book['cover_orientation'] === 'horizontal' ? COVERS_HORIZONTAL : COVERS_VERTICAL;
-            $coverPath = $coverDir . '/' . $book['cover_filename'];
-            if (file_exists($coverPath)) unlink($coverPath);
-            $pdfPath = UPLOADS_PDFS . '/' . $book['pdf_filename'];
-            if (file_exists($pdfPath)) {
-                unlink($pdfPath);
-            }
-            $stmt = $pdo->prepare('DELETE FROM books WHERE id = :id');
-            $stmt->execute([':id' => $id]);
+        if (!$book) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Book not found']);
+            exit;
         }
+
+        $coverDir = $book['cover_orientation'] === 'horizontal' ? COVERS_HORIZONTAL : COVERS_VERTICAL;
+        $coverPath = $coverDir . '/' . $book['cover_filename'];
+        if (file_exists($coverPath)) unlink($coverPath);
+        $pdfPath = UPLOADS_PDFS . '/' . $book['pdf_filename'];
+        if (file_exists($pdfPath)) {
+            unlink($pdfPath);
+        }
+        $stmt = $pdo->prepare('DELETE FROM books WHERE id = :id');
+        $stmt->execute([':id' => $id]);
 
         echo json_encode(['success' => true]);
         break;

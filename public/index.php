@@ -37,9 +37,9 @@ if ($featured) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dreamtigers - εκδόσεις εξωτερικής καύσης-εσωτερικής κατανάλωσης</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
 
     <meta property="og:locale" content="el_GR">
     <meta property="og:type" content="website">
@@ -58,7 +58,7 @@ if ($featured) {
 </head>
 <body>
     <header class="gallery-hero">
-        <img src="logo.png" alt="Dreamtigers" class="gallery-logo">
+        <img src="/logo.png" alt="Dreamtigers" class="gallery-logo">
         <h1 class="gallery-brand">DREAMTIGERS</h1>
         <p class="gallery-tagline">εκδόσεις εξωτερικής καύσης-εσωτερικής κατανάλωσης</p>
     </header>
@@ -66,7 +66,7 @@ if ($featured) {
     <?php if ($featured): ?>
     <section class="featured-section">
         <?php
-        $featuredCoverPath = "covers/{$coverDir}/" . rawurlencode($featured['cover_filename']);
+        $featuredCoverPath = "/covers/{$coverDir}/" . rawurlencode($featured['cover_filename']);
         ?>
         <div class="featured-content">
             <a href="book/<?= htmlspecialchars($featured['slug'], ENT_QUOTES, 'UTF-8') ?>">
@@ -87,7 +87,7 @@ if ($featured) {
         <div class="book-grid">
             <?php foreach ($gridBooks as $book):
                 $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-                $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
+                $bookCoverPath = "/covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
             ?>
             <a href="book/<?= htmlspecialchars($book['slug'], ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
                 <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
@@ -99,7 +99,7 @@ if ($featured) {
         <div class="book-grid book-grid-hidden" id="remainingBooks">
             <?php foreach ($remainingBooks as $book):
                 $bookCoverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-                $bookCoverPath = "covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
+                $bookCoverPath = "/covers/{$bookCoverDir}/" . rawurlencode($book['cover_filename']);
             ?>
             <a href="book/<?= htmlspecialchars($book['slug'], ENT_QUOTES, 'UTF-8') ?>" class="book-grid-item">
                 <img src="<?= htmlspecialchars($bookCoverPath, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">

@@ -17,7 +17,7 @@ if (!$book) {
     exit('Book not found.');
 }
 
-$pdfPath = 'free_ebooks/' . $book['pdf_filename'];
+$pdfPath = '/free_ebooks/' . $book['pdf_filename'];
 if (!file_exists($pdfPath)) {
     header('HTTP/1.0 404 Not Found');
     exit('Book PDF not available.');
@@ -40,9 +40,9 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $ogTitle ?></title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
 
     <meta property="og:locale" content="el_GR">
     <meta property="og:type" content="book">
@@ -61,7 +61,7 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
 </head>
 <body>
     <main class="book-page">
-        <a href="index.php" class="book-back">&larr; Back to all books</a>
+        <a href="/" class="book-back">&larr; Back to all books</a>
         <div class="book-header">
             <h1><?= htmlspecialchars($book['title']) ?></h1>
             <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode('https://dreamtigers.gr/book/' . $book['slug']) ?>&quote=<?= urlencode('Διαβάστε δωρεάν: ' . $book['title'] . ' - Dreamtigers') ?>"

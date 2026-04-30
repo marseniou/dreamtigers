@@ -13,7 +13,7 @@ $books = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Dreamtigers</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <main class="admin-section">
@@ -46,7 +46,7 @@ $books = $stmt->fetchAll();
         <div class="book-list" id="bookList">
             <?php foreach ($books as $book):
                 $coverDir = $book['cover_orientation'] === 'horizontal' ? 'horizontal' : 'vertical';
-                $coverPath = "covers/{$coverDir}/{$book['cover_filename']}";
+                $coverPath = "/covers/{$coverDir}/{$book['cover_filename']}";
             ?>
             <div class="book-list-item" id="book-<?= $book['id'] ?>">
                 <img src="<?= htmlspecialchars($coverPath) ?>" alt="<?= htmlspecialchars($book['title']) ?>">

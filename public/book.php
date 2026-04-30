@@ -17,8 +17,14 @@ if (!$book) {
     exit('Book not found.');
 }
 
-$pdfPath = '/free_ebooks/' . $book['pdf_filename'];
-if (!file_exists($pdfPath)) {
+// Path for the browser (URL)
+$pdfUrl = '/free_ebooks/' . $book['pdf_filename'];
+
+// Path for the server (Filesystem)
+// Use the constant from config.php which points to the real folder
+$pdfFile = FREE_EBOOKS_DIR . '/' . $book['pdf_filename'];
+
+if (!file_exists($pdfFile)) {
     header('HTTP/1.0 404 Not Found');
     exit('Book PDF not available.');
 }
@@ -75,8 +81,8 @@ $ogDescription = 'Διαβάστε δωρεάν το "' . htmlspecialchars($book
             </a>
         </div>
         <div class="book-pdf-container">
-            <object data="<?= htmlspecialchars($pdfPath) ?>" type="application/pdf" width="100%" height="100%">
-                <p>Your browser doesn't support embedded PDFs. <a href="<?= htmlspecialchars($pdfPath) ?>">Download the PDF</a> instead.</p>
+            <object data="<?= htmlspecialchars($pdfUrl) ?>" type="application/pdf" width="100%" height="100%">
+                <p>Your browser doesn't support embedded PDFs. <a href="<?= htmlspecialchars($pdfUrl) ?>">Download the PDF</a> instead.</p>
             </object>
         </div>
     </main>

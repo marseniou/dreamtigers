@@ -33,3 +33,6 @@ app.db
 admin_config.php
 .worktrees/
 Archive.zip
+
+# Free ebooks
+free_ebooks

@@ -186,14 +186,14 @@ switch ($action) {
         }
 
         $slug = generateSlug($newTitle);
-        $slug = $pdo->prepare('SELECT COUNT(*) FROM books WHERE slug = :slug AND id != :id');
-        $slug->execute([':slug' => $slug, ':id' => $id]);
-        if ((int)$slug->fetchColumn() > 0) {
-            $stmt = $pdo->prepare('SELECT slug FROM books WHERE id = :id');
+        $stmt = $pdo->prepare('SELECT COUNT(*) FROM books WHERE slug = :slug AND id != :id');
+        $stmt->execute([':slug' => $slug, ':id' => $id]);
+        if ((int)$stmt->fetchColumn() > 0) {
+        $stmt = $pdo->prepare('SELECT slug FROM books WHERE id = :id');
             $stmt->execute([':id' => $id]);
             $slug = $stmt->fetchColumn();
         } else {
-            $stmt = $pdo->prepare('SELECT slug FROM books WHERE id = :id');
+        $stmt = $pdo->prepare('SELECT slug FROM books WHERE id = :id');
             $stmt->execute([':id' => $id]);
             $originalSlug = $stmt->fetchColumn();
             $counter = 1;

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /covers/
+Allow: /free_ebooks/
+
+User-agent: facebookexternalhit
+Allow: /

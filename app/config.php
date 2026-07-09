@@ -18,8 +18,11 @@ define('COVER_HEIGHT_VERTICAL', 595);
 define('COVER_WIDTH_HORIZONTAL', 595);
 define('COVER_HEIGHT_HORIZONTAL', 419);
 
-// Admin credentials - override in admin_config.php (not committed to VCS)
-if (file_exists(__DIR__ . '/admin_config.php')) {
+// Admin credentials - override via env vars, admin_config.php, or defaults
+if (getenv('ADMIN_USERNAME') && getenv('ADMIN_PASSWORD')) {
+    define('ADMIN_USERNAME', getenv('ADMIN_USERNAME'));
+    define('ADMIN_PASSWORD', getenv('ADMIN_PASSWORD'));
+} elseif (file_exists(__DIR__ . '/admin_config.php')) {
     require_once __DIR__ . '/admin_config.php';
 } else {
     define('ADMIN_USERNAME', 'admin');

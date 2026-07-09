@@ -8,7 +8,8 @@ RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available
 
 COPY . /var/www/html
 
-RUN chown www-data:www-data /var/www/html && \
+RUN ln -s ../covers /var/www/html/public/covers && \
+    chown www-data:www-data /var/www/html && \
     chmod u+w /var/www/html
 
 EXPOSE 80
